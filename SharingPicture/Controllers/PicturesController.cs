@@ -1,28 +1,42 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SharingPicture.Models;
+using SharingPicture.Services;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace SharingPicture.Controllers
 {
     public class PicturesController : Controller
     {
         private readonly Swd392su2025Context _context;
+        private readonly IPictureService _service;
 
-        public PicturesController(Swd392su2025Context context)
+        public PicturesController(Swd392su2025Context context, IPictureService service)
         {
             _context = context;
+            _service = service;
         }
 
         // GET: Pictures
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(
+        string searchString, string sortOrder, int page = 1, int pageSize = 9, string searchBy = "title")
         {
-            var swd392su2025Context = _context.Pictures.Include(p => p.User);
-            return View(await swd392su2025Context.ToListAsync());
+            var (items, totalItems) = await _service.GetPicturesAsync(searchString, searchBy, sortOrder, page, pageSize);
+
+            ViewData["CurrentFilter"] = searchString;
+            ViewData["CurrentPage"] = page;
+            ViewData["TotalPages"] = (int)Math.Ceiling(totalItems / (double)pageSize);
+            ViewData["CurrentSearchBy"] = searchBy;
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["UploadedSortParm"] = String.IsNullOrEmpty(sortOrder) ? "uploaded_desc" : "";
+            ViewData["CommentsSortParm"] = sortOrder == "comments" ? "comments_desc" : "comments";
+            ViewData["LikesSortParm"] = sortOrder == "likes" ? "likes_desc" : "likes";
+
+            return View(items);
         }
 
         // GET: Pictures/Details/5

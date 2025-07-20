@@ -12,6 +12,8 @@ builder.Services.AddDbContext<Swd392su2025Context>(options =>
 
 builder.Services.AddScoped<IAlbumRepository, AlbumRepository>();
 builder.Services.AddScoped<IAlbumService, AlbumService>();
+builder.Services.AddScoped<IPictureRepository, PictureRepository>();
+builder.Services.AddScoped<IPictureService, PictureService>();
 
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
