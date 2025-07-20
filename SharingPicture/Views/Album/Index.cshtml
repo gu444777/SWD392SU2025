@@ -1,0 +1,30 @@
+﻿@model IEnumerable<SharingPicture.Models.Album>
+
+<h2>Albums</h2>
+
+<a asp-action="Create" class="btn btn-primary">+ Create New Album</a>
+
+<table class="table mt-3">
+    <thead>
+        <tr>
+            <th>Album Name</th>
+            <th>Description</th>
+            <th>User</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var album in Model)
+        {
+            <tr>
+                <td>@album.Name</td>
+                <td>@album.Description</td>
+                <td>@album.User.Username</td>
+                <td>
+                    <a asp-action="AddPicture" asp-route-id="@album.Id" class="btn btn-sm btn-success">Add Picture</a>
+                    <a asp-action="Delete" asp-route-id="@album.Id" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

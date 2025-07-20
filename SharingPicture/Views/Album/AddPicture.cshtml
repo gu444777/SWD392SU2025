@@ -1,0 +1,25 @@
+﻿@model SharingPicture.Models.Album
+
+@{
+    ViewData["Title"] = "Add Picture";
+    var pictures = ViewBag.Pictures as List<SharingPicture.Models.Picture>;
+}
+
+<h2>Add Picture to Album: @Model.Name</h2>
+
+<form asp-action="AddPicture" method="post">
+    <input type="hidden" name="albumId" value="@Model.Id" />
+
+    <div class="mb-3">
+        <label class="form-label">Select Picture</label>
+        <select name="pictureId" class="form-select">
+            @foreach (var pic in pictures!)
+            {
+                <option value="@pic.Id">@pic.Title</option>
+            }
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-success">Add Picture</button>
+    <a asp-action="Index" class="btn btn-secondary">Back</a>
+</form>

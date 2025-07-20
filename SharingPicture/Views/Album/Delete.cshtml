@@ -1,0 +1,20 @@
+﻿@model SharingPicture.Models.Album
+
+@{
+    ViewData["Title"] = "Delete Album";
+}
+
+<h2>Delete Album</h2>
+
+<h3>Bạn có chắc chắn muốn xóa album này?</h3>
+
+<div>
+    <h4>@Model.Name</h4>
+    <p>@Model.Description</p>
+</div>
+
+<form asp-action="DeleteConfirmed" method="post">
+    <input type="hidden" name="id" value="@Model.Id" />
+    <button type="submit" class="btn btn-danger">Xóa</button>
+    <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+</form>

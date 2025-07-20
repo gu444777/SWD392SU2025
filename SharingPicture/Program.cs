@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using SharingPicture.Models;
+using SharingPicture.Repositories;
+using SharingPicture.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,8 +9,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<Swd392su2025Context>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("SharingPictureDB")));
-builder.Services.AddDistributedMemoryCache();
 
+builder.Services.AddScoped<IAlbumRepository, AlbumRepository>();
+builder.Services.AddScoped<IAlbumService, AlbumService>();
+
+builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(30);
@@ -34,6 +39,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Album}/{action=Index}/{id?}");
 
 app.Run();
